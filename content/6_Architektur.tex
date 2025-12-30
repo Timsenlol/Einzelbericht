@@ -1,0 +1,28 @@
+\chapter{Architektur}\label{app:supplemental-information}
+Die Grundidee der Architektur basiert auf einer strikten Trennung zwischen den lokal Kundendaten und den Modulen die als Cloudservices zur Verfügung gestellt werden.
+\begin{figure}[htb]
+    \centering
+    % Hier wird der Pfad zum Ordner "figures" angegeben
+    \includegraphics[width=1.0\textwidth]{figures/architektur} 
+    \caption{Systemarchitektur des Projekts (Angular, Spring Boot, MongoDB)}
+    \label{fig:architektur}
+\end{figure}
+
+Konkret unterteilt sich die Architektur in zwei große Blöcke. Zum einem die \textbf{On-Premise Software} die dem Kunden ausgeliefert wird und zum andern in unsere\textbf{ SecHub-Services}.
+\subsection{Kundenumgebung}
+Die gesamte Kundenumgebung wird als Gesamtes ausgeliefert und vom Kunden lokal betrieben.  Dadurch bleiben teilweise hoch vertrauenswürdigen Daten, die im Kontext dieser Anwendung generiert oder aufbereitet werden, unter vollständiger Kontrolle des  Kunden. Dieser Ansatz stellt sicher, dass zu keinem Zeitpunkt Rohdaten den Kunden verlassen. 
+\subsubsection{Dashboard}
+Ausliefert wird ein Angular Dashboard, welches im Browser des Kunden läuft. Folgende Funktionen werden nach aktuellen Stand über das Dashboard aufrufbar sein:
+  \begin{itemize}
+  \item \textbf{Erstellung von Phishing Kampagnen}
+    \item \textbf{Verwaltung von Phishing Kampagnen}
+        \item \textbf{Auswertung von Phishing Kampagnen}
+  \item \textbf{CVE-Analysen und Reports}
+  \item \textbf{Nutzerverwaltung}
+\end{itemize}
+\subsubsection{Lokales Backend}
+Als Orchestrators tritt das lokale Spring Boot Backend auf. Es ist primär für für den sichern Umgang mit den vertraulichen Daten verantwortlich. Außerdem dient es als Schnittstelle für die Kommunikation mit den externen Modulen. Nach der Datenverarbeitung übernimmt das Backend die anschließende Weiterverarbeitung des Prozesses.
+\section{SecHub Services}
+\subsection{Gateway}
+Vor unsern Services haben wir ein Spring Cloud Gateway gebaut. Über dieses Gateway, dass als Reverse Proxy konzipiert ist, laufen alle Anfragen. Das Gateway hat beispielsweise die Aufgabe zu prüfen ob eine Berechtigung vorliegt für das Modul, welches angesprochen werden soll. Seine Hauptaufgabe liegt jedoch im sichern weiterleiten der Anfragen an die entsprechenden Module.
+\subsection{Cloud Services}

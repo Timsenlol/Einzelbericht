@@ -1,0 +1,48 @@
+\chapter{Technologiestack}\label{ch:summary}
+Die Auswahl des Technologiestack war einer der zentralen Entscheidungen in diesem Projektö Funktionale  und insbesondere nicht funktionale Anforderungen wie beispielsweise der Datenschutz waren maßgeblich von dieser Entscheidung abhängig. Besonders hervorzuheben ist hier die Entscheidung ob eine eigene KI trainiert werden soll oder auf eine bestehende KI Lösung über eine API Anbindung angebunden sollte.
+\section{KI}
+\subsection{Lokales KI Modell}
+Zu Beginn beschäftigten wir uns im Rahmen der Entwicklung des Phishing Moduls intensiv mit der Möglichkeit eine eigenes lokales KI Modell zu betreiben. Es wurden dabei mehrere bekannte Open Source Modelle getestet:
+  \begin{itemize}
+  \item \textbf{LLaMA 2 / LLaMA 3}
+  \item \textbf{Mistral 7B (lokal lauffähig)}
+  \item \textbf{GPT4All}
+\end{itemize}
+Parallel wurde ein kleines Flask Backend für den Zugriff auf das feinjustierte Modell gebaut.
+\subsection{Zugriff auf eine bestehende KI Lösung}
+Ein weiter Ansatz war der Aufruf von einer bestehenden KI Lösung über einen synchronen Rest Aufruf.
+Nach intensiver Recherche sind wir zu dem Schluss gekommen, dass Mistral für unsern konkreten Anwendungsfall das beste Paket liefert. Gründe hierfür waren:
+  \begin{itemize}
+  \item \textbf{Datenschutz}: Mistral ist ein europäisches Unternehmen und betreibt seine Rechenzentren in Europa und unterliegt somit den europäischen Datenschutzrichtlinien. Dies gewährleistet Transparenz und Rechtssicherheit.(vgl. \cite{mistral2024privacy})
+  \item \textbf{Preismodell}: Mistral bot für akademische Zwecke ein attraktives Preismodell. Als Projekt mit begrenzten finanziellen Ressourcen profitierten wir stark durch dieses Preismodell.(vgl. \cite{mistral2025student}
+\end{itemize}
+Mistral AI bietet die Möglichkeit Agenten zu erstellen, die spezielle Aufgaben erfüllen. Diese Agenten können dann über ihre Restschnittelle angesprochen werden.) 
+\subsection{Entscheidung}
+Nach intensiven Testläufen haben wir uns gegen eine eigene Lokale KI entscheiden und für den Einsatz von Mistral AI entschieden. Diese Entscheidung hatte folgende Gründe:
+\begin{itemize}
+  \item \textbf{Qualität}: Die Qualität und Stabilität der Ergebnisse aus Mistral waren den  der lokalen Modellen deutlich überlegen
+  \item \textbf{Ressourcenbedarf und Kostenaufwand}: Lokale Modelle benötigen eine hohe Kappazität an Arbeitsspeicher(RAM) und Videospeicher (VRAM). Ins besondere gilt dies für generative KI, da diese mit einer hohen Anzahl an Parametern arbeiten. Aufgrund unser begrenzten finanziellen Mittel, war dies realistisch nicht umsetzbar.
+  \item \textbf{Trainingsdaten}: Für hochwertige Mails wären große Mengen domänenspezifischer Trainingsdaten notwendig gewesen.
+\end{itemize}
+\section{Spring Boot}
+Für unsere Backends haben wir uns für Spring in Kombination mit Java/Kotlin entschieden. Hauptgrund für diese Entscheidung war, dass es sich bei Spring um ein etabliertes Framework in der Enterprise Entwicklung handelt. Spring liefert umfassende Unterstützung bei  dem Aufbau von Microservices, swoie bewährte Entwurfsmuster für die Integration von Sicherheitsmechanismen (Spring Security) oder den Datenbankzugriff (Spring Data) (vgl. \cite{spring_website}. Ein weiter Punkt war, dass ich aus meinen beruflichen Umfeld sehr vertraut mit der Entwicklung von Backends mit Spring bin. Ich konnte dieses Wissen ins Team tragen und so die Codequalität und Entwicklungsgeschwindigkeit erhöhen.
+\section{Angular}
+Als Frontend Framework haben wir auf Angular gesetzt. Angular ist wie auch Spring ein etablierter Standard in der Webentwicklung und kommt mit klarer Architektur und sauberer Komponententrennung (vgl. \cite{angular2025docs}). 
+\section{MongoDB}
+Für unsere Datenhaltung haben wir uns für eine nicht nicht-relationale Datenbank entschieden. Grund hierfür war, dass unsere Datenstrukturen deutlich besser dokumentenbasiert abgebildet werden können. Als Datenbanksystem setzen wir hier auf MongoDb, einem der Markführer in dem Bereich von NOSQL-Datenbanken. Für den Zugriff auf die Datenbank nutzen wir Lokal den GUI MongoDBCompass.
+\section{Maven/Node.js}
+Für die Verwaltung vom Abhängigkeiten und Automatisierung von Build-Prozessen setzen wir auf Maven und Node.js/npm. Maven wird für den Build und das Auflösen der Abhängigkeiten im Backend eingesetzt und Node.js zusammen mit npm für den Build und das Auflösen der Abhänigkeiten im Frontend.
+\section{Testing}
+\subsection{Junit}
+Für die Implementierung der Unit-Tests im Backend wurde mit JUnit 5 der De-facto-Standard für Java-Anwendungen eingesetzt. Es bietet viele Hilfestellungen bei der Implementierung von Testfällen (vgl. \cite{junit2025guide}).
+\subsection{Testcontainer/Podman}
+Für die Ausführung von Intergrationstests im Backend wird die Bibliothek Testcontainers eingesetzt. Diese ermöglicht es während der Testlaufzeit isolierte Dockercontainer hochzufahren und mit bestimmter Software zu bestücken. Nach Abschluss des Tests werden diese Container wieder verworfen. Zum ausführen der Tests setzten wir lokal auf Podman, der die Container bereitstellen kann. In der CI/CD Pipline (GitHub Actions) werden diese Tests ebenfalls mithilfe von Containern ausgeführt vgl. \cite{podman2025, testcontainers2025}). 
+\subsection{Pact}
+Zum testen der Schnittstellen zwischen dem lokalen Backend des Kunden und unsern Modulen haben wir Pact zum Contract Testing eingesetzt. PACT wird eingesetzt um Interaktionen zwischen Schnittellenpartnern verbindlich über sogenannte Pacts zu definieren. Dies hilft dabei nicht beabsichtige Breakingchanges zu verhindern (vgl. \cite{pact2025docs}).
+\subsection{Playwright}
+Für die Ausführung von End to End Tests ist die Entscheidung auf das Testframework Playwright gefallen. Playwright bietet die Möglichkeit moderne Browser automatisiert zu steuern. Es bietet dem Anwender die Möglichkeit seine spezifischen Workflows automatisiert und performante zu testen(vgl. \cite{playwright2025docs}).
+\section{OAut2}
+Ein weiterer etablierter Standard auf den wir im Rahmen unseres Projektes gesetzt haben ist die Authentifizierung und Autorisierung mit OAuth2.0 (vgl. \cite{oauth2standard}). Zur Implementierung im Backend wurde auf Spring Secuirty gesetzt. Spring Security bietet umfassende Unterstützung für den Umgang mit OAuth-Flows.
+\section{Virtual Threads}
+Synchrone Aufrufe über REST sind im Spring Standardmäßig blockierende Aufrufe.Da die Anzahl der verfügbaren Plattform-Threads durch die Systemressourcen des Servers limitiert ist, stößt die Skalierbarkeit herkömmlicher Thread-Pool-Modelle unter hoher Last schnell an ihre Grenzen. Aus diesem Grund haben wir uns dafür entschieden unser Backend auf Virtual Threads laufen zu lassen. Dadurch das Virtual Threads extrem leichgewichtig sind, ermöglichen sie es blockierende Aufrufe durchzuführen ohne teure Betriebssystem-Threads zu belegen. Grundsätzlich ist es so möglich einen deutlich höheren Durchsatz an Aufrufen zu bearbeiten ohne die Ressourcen erhöhen zu müssen (vgl. \cite{jep444}). 
+

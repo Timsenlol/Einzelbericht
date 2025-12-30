@@ -2,8 +2,18 @@
 
 \section{Abgewandelter Scrum-Prozess}\label{ch:outlook}
 Wir setzten bewusst auf das Scrum-Framework, passten es allerdings an unsere Rahmenbedingungen an.
-\subsection{Springlänge}
+\subsection{Sprintlänge}
 Da unser gesamtes Team berufstätig ist, war ein Treffen Präsenz mit allen 7 Teammitgliedern hauptsächlich in der Blockveranstaltungen der Hochschule möglich. Daher wurde die Sprintlänge auf die Abstände zwischen den Vorlesungsblöcken gelegt. In der Regel waren das 4-8 Wochen. Für uns war es wichtig Review, Planning und Retrospektive vor Ort gemeinsam durchzuführen. 
 \subsection{Backlog}
 Das Prodocut Backlog wurde gemeinsam mit dem Auftraggeber Dr. Dirk Kötting abgesimmt und fokussierte sich auf die beiden Hauptmodule Phishing-Modul und CVE-Modul. Die war im Backlogs als Epics darstellten. Die Workstreams formulierten für ihre Module, die Userstories weitestgehend selbst und stellten diese dann anschließend in einem Review vor. 
-
+\section{Branching Vorgehen}
+Zur Vermeidung von Mergekonflikten und zur Verbesserung der Zusammenarbeit haben wir auf ein vereinfachtes Gitflow Modell eingesetzt (vgl. \cite{driessen2010gitflow}).  Grundsätzlich wurde für jedes in der Entwicklung befindende Feature, ein Feature-Branch angelegt. Nach Fertigstellung und Code Review durch die Gruppe, wurde dieser Branch dann über einen Pull Request in den in unsern Main-Branch integriert. 
+\section{CI/CD-Pipeline mit GitHub Actions und Plesk Deployment}
+Unsere CI/CD Pipline setzte sich wie folgt zusammen:
+  \begin{itemize}
+  \item \textbf{GitHub Actions }: Ausführung von Build und Tests bei jedem Push
+  \item \textbf{GitHub Weebhook}: Auslösung von Webhook bei Merge in den Main-Branch 
+  \item \textbf{Plesk}: Deploy auf unsern Server
+\end{itemize}
+\section{Testgetriebene Entwicklung}
+Für ausgewählte Features haben wir versucht nach dem Prinzip der testgetriebene Entwicklung (TDD) entwickelt.Der Ansatz hier ist es, dass die Tests vor dem eigentlichen Produktivcode geschrieben werden. Ziel ist es dann den Produktivcode so zu schreiben, dass die Tests erfolgreich durchlaufen (vgl. \cite{beck2003tdd}). 
