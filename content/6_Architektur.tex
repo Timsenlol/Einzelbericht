@@ -24,5 +24,12 @@ Ausliefert wird ein Angular Dashboard, welches im Browser des Kunden läuft. Fol
 Als Orchestrators tritt das lokale Spring Boot Backend auf. Es ist primär für für den sichern Umgang mit den vertraulichen Daten verantwortlich. Außerdem dient es als Schnittstelle für die Kommunikation mit den externen Modulen. Nach der Datenverarbeitung übernimmt das Backend die anschließende Weiterverarbeitung des Prozesses.
 \section{SecHub Services}
 \subsection{Gateway}
-Vor unsern Services haben wir ein Spring Cloud Gateway gebaut. Über dieses Gateway, dass als Reverse Proxy konzipiert ist, laufen alle Anfragen. Das Gateway hat beispielsweise die Aufgabe zu prüfen ob eine Berechtigung vorliegt für das Modul, welches angesprochen werden soll. Seine Hauptaufgabe liegt jedoch im sichern weiterleiten der Anfragen an die entsprechenden Module.
+Vor unsern Services haben wir ein Spring Cloud Gateway gebaut. Über dieses Gateway, das als Reverse Proxy konzipiert ist, laufen alle Anfragen. Das Gateway hat beispielsweise die Aufgabe, zu prüfen, ob eine Berechtigung vorliegt für das Modul, welches angesprochen werden soll. Seine Hauptaufgabe liegt jedoch im sichern Weiterleiten der Anfragen an die entsprechenden Module.
 \subsection{Cloud Services}
+Das Gateway leitet die Anfragen an die modularen Services weiter. Dieses Konzept erlaubt uns, die Module zu jedem Zeitpunkt beliebig erweitern zu können ohne dabei die Lauffähigkeit der bestehenden Services zu gefährden.  Momentan stehen folgende Module zur Verfügung:
+  \begin{itemize}
+  \item \textbf{Erstellung von Phishing Mail Generator}
+   \item \textbf{Cve Parser Service}
+\end{itemize}
+\section{Sicherhetiskonzept}
+Alle Verbindungen sind TLS verschlüsselt unsere Endpunkte sind mit OAuth2.0 abgesichert. Unsere Cloud-Services sind zustandslos und minimieren daher ihre Angriffsfläche. Wir nutzen ein Gateway als Security  Layer und alle vertraunswürdigen Daten werden vom Kunden selbst verwaltet und gehalten. 
