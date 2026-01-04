@@ -33,7 +33,7 @@ Für unsere Datenhaltung haben wir uns für eine nicht nicht-relationale Datenba
 \section{Maven/Node.js}
 Für die Verwaltung vom Abhängigkeiten und Automatisierung von Build-Prozessen setzen wir auf Maven und Node.js/npm. Maven wird für den Build und das Auflösen der Abhängigkeiten im Backend eingesetzt und Node.js zusammen mit npm für den Build und das Auflösen der Abhänigkeiten im Frontend.
 \section{Testing}
-\subsection{Junit}
+\subsection{JUnit}
 Für die Implementierung der Unit-Tests im Backend wurde mit JUnit 5 der De-facto-Standard für Java-Anwendungen eingesetzt. Es bietet viele Hilfestellungen bei der Implementierung von Testfällen (vgl. \cite{junit2025guide}).
 \subsection{Testcontainer/Podman}
 Für die Ausführung von Intergrationstests im Backend wird die Bibliothek Testcontainers eingesetzt. Diese ermöglicht es während der Testlaufzeit isolierte Dockercontainer hochzufahren und mit bestimmter Software zu bestücken. Nach Abschluss des Tests werden diese Container wieder verworfen. Zum ausführen der Tests setzten wir lokal auf Podman, der die Container bereitstellen kann. In der CI/CD Pipline (GitHub Actions) werden diese Tests ebenfalls mithilfe von Containern ausgeführt vgl. \cite{podman2025, testcontainers2025}). 
