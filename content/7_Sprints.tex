@@ -51,11 +51,11 @@ Im laufe dieses Sprints fanden immer wieder punktuelle Code Reviews statt. Ein B
 \begin{figure}[H]
     \centering
     % Hier wird der Pfad zum Ordner "figures" angegeben
-    \includegraphics[width=0.8\textwidth]{figures/wizard.png} 
+    \includegraphics[width=0.7\textwidth]{figures/wizard.png} 
     \caption{Der finale Wizard}
     \label{fig:architektur}
 \end{figure}
-Ein weiterer technischer Schwerpunkt dieses Sprints lag in dem Aufbau eines Spring Cloud Gateway. Das Gateway wurde als zentrale Komponente zwischen den Lokalen Backend und unsern Modulen geschaltet. Ziel war es eine saubere Trennung zwischen den lokalen Komponenten beim Anwender und unsern Cloud Komponenten zu schaffen sowie eine einheitliche Kommunikation zu gewährleisten.
+Ein weiterer technischer Schwerpunkt dieses Sprints lag in dem Aufbau eines Spring Cloud Gateway. Ich entwickelte das Gateway wurde als zentrale Komponente zwischen den Lokalen Backend und unseren Modulen. Ziel war es eine saubere Trennung zwischen den lokalen Komponenten beim Anwender und unsern Cloud Komponenten zu schaffen sowie eine einheitliche Kommunikation zu gewährleisten.
 \begin{itemize}
   \item \textbf{Zentrales Routing}: Es ist als Proxy konzipiert und leitet die eingehen Anfragen an die entsprechenden Module weiter.
   \item \textbf{Sicherheit}: Das Gateway führt eine initiale Rechteprüfung durch, hierbei prüft es dem vom lokalen Backend übergeben Nutzungsschlüssel auf Gültigkeit. Bei Erfolgreicher Prüfung wird vom Gateway ein neues JSON Web Token (JWT) generiert, welches für die interne Kommunikation mit den Modulen verwendet wird.
@@ -67,3 +67,37 @@ Zur Qualitätssicherung dieser Implementierung führte ich eine Reihe von End to
   \item \textbf{Concurrency Control mittels Semaphoren}: Zusätzlich habe ich einen Semaphore implementiert, dieser limitiert die Anzahl der gleichzeitig ausgehenden Anfragen an die Mistal-API auf maximal zwei Threads. Überzählige Anfragen werden in eine Warteschlange gesetzt.
 \end{itemize}
 Zum Abschluss des Sprints gab uns Tom nochmal Einblicke in die Umsetzung des Deployments mittels Plesk. Ich empfand diesen Austausch als wirklich interessant und wert schöpfend, da ich bisher deploys immer dierkt über GitHub oder Jenkins gemacht hatte. Ich unterstütze den Prozess indem ich entsprechenden Weebhooks in unsern GitHub-Repositories konfigurierte. Im abschließenden Review wurden  alle Anpassungen präsentiert und diskutiert. Die Abschließende Retrospektive unterstrich die positive Dynamik in der Projektgruppe. Das Team funktioniert gut, die Kommunikation ist effizient und alle Aufgaben wurden zielgerichtet erledigt.
+\section{Sprint 4 21.03.2025 bis 09.05.2025}
+Der Sprint startete mit unsern Planning am 21.03.2025, im Fokus Stand die vollständige Implementierung des Datenbankmodells in das Lokale Backend. Darüber hinaus wollten wir zum verwalten der Datenbankeinträge Schnittellen bereitstellen (CRUD Operationen). Ein weiterer Meilenstein in diesem Sprint war für uns der echte Mailversand und die draus resultierende Erstellung und Persistierung der Kampagne. 
+Eine Kampagne stellt eine eingestände Entität in unserer Datenbank dar. Eine Kampagne fungiert als eine Oberklasse, die die eigentliche Mail, alle Konfigurationsparameter und dynamische Werte zur Kampagne wie Klickrate oder den Status hält.
+\begin{figure}[H]
+    \centering
+    % Hier wird der Pfad zum Ordner "figures" angegeben
+    \includegraphics[width=0.8\textwidth]{figures/DbModell.png} 
+    \caption{Das fertige Datenmodell im Lokalen Backend}
+    \label{fig:architektur}
+\end{figure}
+Für mich begann der Sprint mit Performance Optimierung bei der Mailerstellung. Im Rahmen von iterativen Tests ermittelte ich, dass die realtiv hohen Durchlaufzeiten beim erstellen von Mails auf die Verarbeitungszeit der generativen KI (Mistral AI) zurückzuführen ist. Daraus ergab sich für mich eine zentrale architektonische Problemstellung, denn ein Srpingbackend nutzt in der Regel Thread-per-Request-Modell (Tomcat), dass heißt für jedem Aufruf wird ein Thread zugewiesen. Das Problem ist diese Threads gelten als teuer, da sie direkt Systemressourcen gebunden sind. Bei steigender Last besteht hier die Gefahr, dass es zu einem Thread Starvation kommen kann. Hierbei wäre der Service nicht mehr erreichbar, weil alle Threads zurzeit auf eine KI Antwort warten ohne dabei (und das ist wichtig) tatsächlich die ihnen zugewiesene Rechenleistung zu nutzen. Wir könnten in diesem Szenario dann nur durch mehr Severinstanzen oder durch einen größeren Threadpool pro Instanz skalieren, obwohl das ja eigentlich gar nicht nötig wäre, da unsere Kapazitäten gar nicht genutzt werden sondern nur durch warten blockiert werden.
+Ich erarbeite drei Ansätze um mit dieser Problemstellung umzugehen:
+\begin{itemize}
+  \item \textbf{Akzeptanz und Fehlertoleranz}: Bei diesem Ansatz wäre würde das bestehende Modell beibehalten und das Fehlerhandling optimiert.
+  \begin{itemize}
+  \item \textbf{Vorteil}: Kein Implementierungsaufwand und keine erhöhte Codekomplexität
+  \item \textbf{Nachteil}: Bei Hoher Last Gefahr, dass Service nicht mehr Erreichbar ist beziehungsweise nur teuer skaliert werden kann.
+  \end{itemize}
+  \item \textbf{Reaktives Programmiermodell (Spring WebFlux)}: Bei diesem Ansatz würden wir von einem imperativen Modell auf ein reaktives umstellen. Bei einem reaktiven Programmiermodell sind die Threads nicht fest an den Anfragen gebunden sondern reagieren auf tatsächliche Ereignisse.
+    \begin{itemize}
+  \item \textbf{Vorteil}: extrem gute Ressourceneffizienz selbst bei vielen Anfragen
+  \item \textbf{Nachteil}: Die Codebasis müsste vollständig umgeschrieben werden, da hier keine blockierenden Codeteile mir vorhanden sein dürfen. Dies würde auch alle extern eingebundenen Bibiotheken betreffen. Zudem würde sie die Komplexität massiv erhöhen, was das Debugging und die Einarbeitung des Team behindern würde.
+  \end{itemize}
+    \item \textbf{Virtual Threads}: Seit Java 21  gibt es die Möglichkeit Threads zur zu virtualisieren. Hierbei würden wir die blockierenden Aufrufe akzeptieren, aber die Threads sehr günstig machen, da wir diese von den echten Systemkapazitäten entkoppeln
+      \begin{itemize}
+  \item \textbf{Vorteil}: aus wenigen physischen Threads können Millionen leichtgewichtige virtuelle Threads entstehen. Codebasis bleibt weitesgehend gleich.
+  \item \textbf{Nachteil}: Virtuelle Threads erhöhen nicht die Rechenleistung. Sie bieten sicher daher nicht für rechenintensive Anwendungen an.
+  \end{itemize}
+\end{itemize}
+Ich habe diese Punkte unserm Workstream Team vorgestellt und gemeinsam haben wir uns auf den Einsatz von Virtual Threads geeinigt, da sie unser Problem lösen ohne die Architektur grundlegend zu verändern. 
+Im laufe dieses Sprint implementiere ich weitestgehend in Pair- und Mob-Programming-Sessions das Datenbankmodell in das lokale Backend. Das heißt wir haben die entsprechenden Klassen in Java angelegt und die entsprechenden Services für den Zugriff auf die MongoDB gebaut. Darüber hinaus haben wir einen Controller implementiert der die vereinbarten Schnittstellen zur Verfügung stellt. Wir haben im nächsten Schritt diese Schnittstellen auch aus dem Frontend angebunden. Es war nun erstmalig möglich aus dem Frontend Daten im Backend zu verwalten.
+In weiteren Pair- und Mob-Programming-Sessions haben wir die Versandfunktionalität umgesetzt. Hierbei hinterlegten für die Testphase unser eigener Mailserver angebunden. In Produktivbetrieb ist es so Gedacht, dass der Anwender bei der Installation seinen Mailserver als Umgebungsvariable mitgibt. Zum versenden der HTML Mails setzen wir auf Springmail in Kombination mit MimeMessage. Ummittelbar vor dem Versand erfolgt eine dynamische Personalisierung mit Anrede und Titel. Um Fehlsendungen und Missbrauch vorzubeugen, ist es während unsern Proof of Concept Phase nur möglich echte Mails an Empfänger einer festgelegten Testliste herauszuschicken.  Alle andern Sendevorgänge werden lediglich im System geloggt. Nach dem erfolgreichen Versenden der Mails wird eine neue Kampagnen-Entität in der Datenbank gespeichert. Diese speichert unter andrem die Referenzen (ID) der Empfänger um später das Interaktionsverhalten nachverfolgen zu können. 
+Nun war es uns möglich auch erstmalig den End-to-End-Workflow zu durchlaufen von anlegen der Empfängerlisten bis zum finalen Versand der Mails.
+Der Sprint endete mit unsern Review und Retrospektive am 09.05.2025. Im Rahmen der Review präsentierten wir unsere Fortschritte. Ich bin hier zum Beispiel nochmal explizit auf die Virtual Threads eingegangen, die eingebaut wurden. Die Retrospektive zeigte, dass unser Projektteam weiterhin hoch motiviert ist und äußert gut zusammen arbeitet.
