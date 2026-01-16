@@ -1,5 +1,5 @@
 \chapter{Technologiestack}\label{ch:summary}
-Die Auswahl des Technologiestack war einer der zentralen Entscheidungen in diesem Projekt Funktionale  und insbesondere nicht funktionale Anforderungen wie beispielsweise der Datenschutz waren maßgeblich von dieser Entscheidung abhängig. Besonders hervorzuheben ist hier die Entscheidung ob eine eigene KI trainiert werden soll oder auf eine bestehende KI Lösung über eine API Anbindung angebunden sollte.
+Die Auswahl des Technologiestack war einer der zentralen Entscheidungen in diesem Projekt funktionale  und insbesondere nicht funktionale Anforderungen wie beispielsweise der Datenschutz waren maßgeblich von dieser Entscheidung abhängig. Besonders hervorzuheben ist hier die Entscheidung ob eine eigene KI trainiert werden soll oder eine bestehende KI Lösung über eine API Anbindung angebunden sollte.
 \section{KI}
 \subsection{Lokales KI Modell}
 Zu Beginn beschäftigten wir uns im Rahmen der Entwicklung des Phishing Moduls intensiv mit der Möglichkeit eine eigenes lokales KI Modell zu betreiben. Es wurden dabei mehrere bekannte Open Source Modelle getestet:
@@ -22,7 +22,7 @@ Mistral AI bietet die Möglichkeit Agenten zu erstellen, die spezielle Aufgaben 
 Nach intensiven Testläufen haben wir uns gegen eine eigene Lokale KI entscheiden und für den Einsatz von Mistral AI entschieden. Diese Entscheidung hatte folgende Gründe:
 \begin{itemize}
   \item \textbf{Qualität}: Die Qualität und Stabilität der Ergebnisse aus Mistral waren den der lokalen Modellen deutlich überlegen
-  \item \textbf{Ressourcenbedarf und Kostenaufwand}: Lokale Modelle benötigen eine hohe Kappazität an Arbeitsspeicher(RAM) und Videospeicher (VRAM). Ins besondere gilt dies für generative KI, da diese mit einer hohen Anzahl an Parametern arbeiten. Aufgrund unser begrenzten finanziellen Mittel, war dies realistisch nicht umsetzbar.
+  \item \textbf{Ressourcenbedarf und Kostenaufwand}: Lokale Modelle benötigen eine hohe Kappazität an Arbeitsspeicher(RAM) und Videospeicher (VRAM). Insbesondere gilt dies für generative KI, da diese mit einer hohen Anzahl an Parametern arbeiten. Aufgrund unser begrenzten finanziellen Mittel, war dies realistisch nicht umsetzbar.
   \item \textbf{Trainingsdaten}: Für hochwertige Mails wären große Mengen domänenspezifischer Trainingsdaten notwendig gewesen.
 \end{itemize}
 \section{Spring Boot}
@@ -37,7 +37,7 @@ Für die Verwaltung vom Abhängigkeiten und Automatisierung von Build-Prozessen 
 \subsection{JUnit}
 Für die Implementierung der Unit-Tests im Backend wurde mit JUnit 5 der De-facto-Standard für Java-Anwendungen eingesetzt. Es bietet viele Hilfestellungen bei der Implementierung von Testfällen (vgl. \cite{junit2025guide}).
 \subsection{Testcontainer/Podman}
-Für die Ausführung von Intergrationstests im Backend wird die Bibliothek Testcontainers eingesetzt. Diese ermöglicht es während der Testlaufzeit isolierte Dockercontainer hochzufahren und mit bestimmter Software zu bestücken. Nach Abschluss des Tests werden diese Container wieder verworfen. Zum ausführen der Tests setzten wir lokal auf Podman, der die Container bereitstellen kann. In der CI/CD Pipline (GitHub Actions) werden diese Tests ebenfalls mithilfe von Containern ausgeführt (vgl. \cite{podman2025, testcontainers2025}). 
+Für die Ausführung von Intergrationstests im Backend wird die Bibliothek Testcontainers eingesetzt. Diese ermöglicht es während der Testlaufzeit isolierte Dockercontainer hochzufahren und mit bestimmter Software zu bestücken. Nach Abschluss des Tests werden diese Container wieder verworfen. Zum Ausführen der Tests nutzen wir lokal die Software Podman, der die Docker-Container bereitstellen kann. In der CI/CD Pipline (GitHub Actions) werden diese Tests ebenfalls mithilfe von Containern ausgeführt (vgl. \cite{podman2025, testcontainers2025}). 
 \subsection{Pact}
 Zum testen der Schnittstellen zwischen dem lokalen Backend des Kunden und unsern Modulen haben wir Pact zum Contract Testing eingesetzt. PACT wird eingesetzt um Interaktionen zwischen Schnittellenpartnern verbindlich über sogenannte Pacts zu definieren. Dies hilft dabei nicht beabsichtige Breakingchanges zu verhindern (vgl. \cite{pact2025docs}).
 \subsection{Playwright}

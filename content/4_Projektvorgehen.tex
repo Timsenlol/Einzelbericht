@@ -7,9 +7,9 @@ Da unser gesamtes Team berufstätig ist, war ein Treffen Präsenz mit allen 7 Te
 \subsection{Termine}
 In unser Workstreamgruppe (Phising-Modul) trafen wir uns einmal die Woche in der Regel virtuell über Microsoft Teams. Mit der gesamten Projektgruppe trafen wir einmal im Monat um uns intensiv auszutauschen. Bedarfsorentiert haben wir unregelmäßig Termine für Ausstauch oder Code reviews vereinbart. Vorort in Nürnberg wurden die wichtigsten Termine Review, Planning und Retrospektive durchgeführt. 
 \subsection{Backlog}
-Das Product Backlog wurde gemeinsam mit dem Auftraggeber Dr. Dirk Kötting abgesimmt und fokussierte sich auf die beiden Hauptmodule Phishing-Modul und CVE-Modul. Die war im Backlogs als Epics darstellten. Die Workstreams formulierten für ihre Module, die Userstories weitestgehend selbst und stellten diese dann anschließend in einem Review vor. 
+Das Product Backlog wurde gemeinsam mit dem Auftraggeber Dr. Dirk Kötting abgesimmt und fokussierte sich auf die beiden Hauptmodule Phishing-Modul und CVE-Modul. Die wir im Backlog als Epics darstellten. Die Workstreams formulierten für ihre Module, die Userstories weitestgehend selbst und stellten diese in einem Review der Projektgruppe vor. 
 \section{Branching Vorgehen}
-Zur Vermeidung von Mergekonflikten und zur Verbesserung der Zusammenarbeit haben wir auf ein vereinfachtes Gitflow Modell eingesetzt (vgl. \cite{driessen2010gitflow}).  Grundsätzlich wurde für jedes in der Entwicklung befindende Feature, ein Feature-Branch angelegt. Nach Fertigstellung und Code Review durch die Gruppe, wurde dieser Branch dann über einen Pull Request in den in unsern Main-Branch integriert. 
+Zur Vermeidung von Mergekonflikten und zur Verbesserung der Zusammenarbeit haben wir auf ein vereinfachtes Gitflow Modell gesetzt (vgl. \cite{driessen2010gitflow}).  Grundsätzlich wurde für jedes in der Entwicklung befindende Feature, ein Feature-Branch angelegt. Nach Fertigstellung und Code Review durch die Gruppe, wurde dieser Branch dann über einen Pull Request in den in unsern Main-Branch integriert. 
 \section{CI/CD-Pipeline mit GitHub Actions und Plesk Deployment}
 Unsere CI/CD Pipline setzte sich wie folgt zusammen:
   \begin{itemize}
@@ -18,4 +18,4 @@ Unsere CI/CD Pipline setzte sich wie folgt zusammen:
   \item \textbf{Plesk}: Deploy auf unsern Server
 \end{itemize}
 \section{Testgetriebene Entwicklung}
-Für ausgewählte Features haben wir versucht nach dem Prinzip der testgetriebene Entwicklung (TDD) entwickelt. Der Ansatz hier ist es, dass die Tests vor dem eigentlichen Produktivcode geschrieben werden. Ziel ist es dann den Produktivcode so zu schreiben, dass die Tests erfolgreich durchlaufen (vgl. \cite{beck2003tdd}). 
+Für ausgewählte Features haben wir versucht nach dem Prinzip der testgetriebene Entwicklung (TDD) vorzugehen. Der Ansatz hier ist es, dass die Tests vor dem eigentlichen Produktivcode geschrieben werden. Ziel ist es dann den Produktivcode so zu schreiben, dass die Tests erfolgreich durchlaufen (vgl. \cite{beck2003tdd}). 
