@@ -3,19 +3,19 @@
 \section{Abgewandelter Scrum-Prozess}\label{ch:outlook}
 Wir setzten bewusst auf das Scrum-Framework, passten es allerdings an unsere Rahmenbedingungen an.
 \subsection{Sprintlänge}
-Da unser gesamtes Team berufstätig ist, war ein Treffen Präsenz mit allen 7 Teammitgliedern hauptsächlich in der Blockveranstaltungen der Hochschule möglich. Daher wurde die Sprintlänge auf die Abstände zwischen den Vorlesungsblöcken gelegt. In der Regel waren das 4-8 Wochen. Für uns war es wichtig Review, Planning und Retrospektive vor Ort gemeinsam durchzuführen. 
+Da unser gesamtes Team berufstätig ist, war ein Treffen in Präsenz mit allen 7 Teammitgliedern hauptsächlich während der Blockveranstaltungen der Hochschule möglich. Daher wurde die Sprintlänge auf die Abstände zwischen den Vorlesungsblöcken gelegt. In der Regel waren das 4-8 Wochen. Für uns war es wichtig, Review, Planning und Retrospektive vor Ort gemeinsam durchzuführen. 
 \subsection{Termine}
-In unser Workstreamgruppe (Phising-Modul) trafen wir uns einmal die Woche in der Regel virtuell über Microsoft Teams. Mit der gesamten Projektgruppe trafen wir einmal im Monat um uns intensiv auszutauschen. Bedarfsorentiert haben wir unregelmäßig Termine für Ausstauch oder Code reviews vereinbart. Vorort in Nürnberg wurden die wichtigsten Termine Review, Planning und Retrospektive durchgeführt. 
+In unser Workstreamgruppe (Phishing-Modul) trafen wir uns einmal die Woche in der Regel virtuell über Microsoft Teams. Mit der gesamten Projektgruppe trafen wir uns einmal im Monat, um uns intensiv auszutauschen. Bedarfsorientiert haben wir unregelmäßig Termine für Austausch oder Code-Reviews vereinbart. Vorort in Nürnberg wurden die wichtigsten Termine Review, Planning und Retrospektive durchgeführt. 
 \subsection{Backlog}
-Das Product Backlog wurde gemeinsam mit dem Auftraggeber Dr. Dirk Kötting abgesimmt und fokussierte sich auf die beiden Hauptmodule Phishing-Modul und CVE-Modul. Die wir im Backlog als Epics darstellten. Die Workstreams formulierten für ihre Module, die Userstories weitestgehend selbst und stellten diese in einem Review der Projektgruppe vor. 
-\section{Branching Vorgehen}
-Zur Vermeidung von Mergekonflikten und zur Verbesserung der Zusammenarbeit haben wir auf ein vereinfachtes Gitflow Modell gesetzt (vgl. \cite{driessen2010gitflow}).  Grundsätzlich wurde für jedes in der Entwicklung befindende Feature, ein Feature-Branch angelegt. Nach Fertigstellung und Code Review durch die Gruppe, wurde dieser Branch dann über einen Pull Request in den in unsern Main-Branch integriert. 
-\section{CI/CD-Pipeline mit GitHub Actions und Plesk Deployment}
-Unsere CI/CD Pipline setzte sich wie folgt zusammen:
+Das Product-Backlog wurde gemeinsam mit dem Auftraggeber Dr. Dirk Kötting abgestimmt und fokussierte sich auf die beiden Hauptmodule Phishing-Modul und CVE-Modul, die wir im Backlog als Epics darstellten. Die Workstream-Gruppen formulierten für ihre Module die Userstories weitestgehend selbst und stellten diese in einem Review der gesamten Projektgruppe vor. 
+\section{Branching-Vorgehen}
+Zur Vermeidung von Mergekonflikten und zur Verbesserung der Zusammenarbeit haben wir auf ein vereinfachtes Gitflow Modell gesetzt (vgl. \cite{driessen2010gitflow}).  Grundsätzlich wurde für jedes in der Entwicklung befindende Feature ein Feature-Branch angelegt. Nach Fertigstellung und Code-Review durch die Gruppe wurde dieser Branch dann über einen Pull-Request in unseren Main-Branch integriert. 
+\section{CI/CD-Pipeline mit GitHub-Actions und Plesk-Deployment}
+Unsere CI/CD-Pipline setzte sich wie folgt zusammen:
   \begin{itemize}
-  \item \textbf{GitHub Actions }: Ausführung von Build und Tests bei jedem Push
-  \item \textbf{GitHub Weebhook}: Auslösung von Webhook bei Merge in den Main-Branch 
-  \item \textbf{Plesk}: Deploy auf unsern Server
+  \item \textbf{GitHub-Actions }: Ausführung von Build und Tests bei jedem Push
+  \item \textbf{GitHub-Webhook}: Auslösung von Webhook bei Merge in den Main-Branch 
+  \item \textbf{Plesk}: Deploy auf unseren Server
 \end{itemize}
 \section{Testgetriebene Entwicklung}
-Für ausgewählte Features haben wir versucht nach dem Prinzip der testgetriebene Entwicklung (TDD) vorzugehen. Der Ansatz hier ist es, dass die Tests vor dem eigentlichen Produktivcode geschrieben werden. Ziel ist es dann den Produktivcode so zu schreiben, dass die Tests erfolgreich durchlaufen (vgl. \cite{beck2003tdd}). 
+Für ausgewählte Features haben wir versucht, nach dem Prinzip der testgetriebenen Entwicklung (TDD) vorzugehen. Der Ansatz hier ist es, dass die Tests vor dem eigentlichen Produktivcode geschrieben werden. Ziel ist es dann, den Produktivcode so zu schreiben, dass die Tests erfolgreich durchlaufen (vgl. \cite{beck2003tdd}). 

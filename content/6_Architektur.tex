@@ -1,5 +1,5 @@
 \chapter{Architektur}\label{app:supplemental-information}
-Die Grundidee der Architektur basiert auf einer strikten Trennung zwischen den lokalen Kundendaten und den Modulen die als Cloudservices zur Verfügung gestellt werden.
+Die Grundidee der Architektur basiert auf einer strikten Trennung zwischen den lokalen Kundendaten und den Modulen, die als Cloudservices zur Verfügung gestellt werden.
 \begin{figure}[htb]
     \centering
     % Hier wird der Pfad zum Ordner "figures" angegeben
@@ -8,28 +8,28 @@ Die Grundidee der Architektur basiert auf einer strikten Trennung zwischen den l
     \label{fig:architektur}
 \end{figure}
 
-Konkret unterteilt sich die Architektur in zwei große Blöcke. Zum einem die \textbf{On-Premise Software} die dem Kunden ausgeliefert wird und zum andern in unsere\textbf{ SecHub-Services}.
+Konkret unterteilt sich die Architektur in zwei große Blöcke: zum einem die \textbf{On-Premise-Software}, die dem Kunden ausgeliefert wird, und zum andern unsere\textbf{ SecHub-Services}.
 \subsection{Kundenumgebung}
-Die gesamte Kundenumgebung wird als Gesamtes ausgeliefert und vom Kunden lokal betrieben.  Dadurch bleiben teilweise hoch vertrauenswürdigen Daten, die im Kontext dieser Anwendung generiert oder aufbereitet werden, unter vollständiger Kontrolle des  Kunden. Dieser Ansatz stellt sicher, dass zu keinem Zeitpunkt Rohdaten den Kunden verlassen. 
+Die gesamte Kundenumgebung wird als Gesamtes ausgeliefert und vom Kunden lokal betrieben. Dadurch bleiben teilweise hoch vertrauenswürdigen Daten, die im Kontext dieser Anwendung generiert oder aufbereitet werden, unter vollständiger Kontrolle des  Kunden. Dieser Ansatz stellt sicher, dass zu keinem Zeitpunkt Rohdaten den Kunden verlassen. 
 \subsubsection{Dashboard}
-Ausliefert wird ein Angular Dashboard, welches im Browser des Kunden läuft. Folgende Funktionen werden nach aktuellen Stand über das Dashboard aufrufbar sein:
+Ausgeliefert wird ein Angular Dashboard, welches im Browser des Kunden läuft. Folgende Funktionen werden nach aktuellen Stand über das Dashboard aufrufbar sein:
   \begin{itemize}
-  \item \textbf{Erstellung von Phishing Kampagnen}
-    \item \textbf{Verwaltung von Phishing Kampagnen}
-        \item \textbf{Auswertung von Phishing Kampagnen}
+  \item \textbf{Erstellung von Phishing-Kampagnen}
+    \item \textbf{Verwaltung von Phishing-Kampagnen}
+        \item \textbf{Auswertung von Phishing-Kampagnen}
   \item \textbf{CVE-Analysen und Reports}
   \item \textbf{Nutzerverwaltung}
 \end{itemize}
 \subsubsection{Lokales Backend}
-Als Orchestrators tritt das lokale Spring Boot Backend auf. Es ist primär für den sichern Umgang mit den vertraulichen Daten verantwortlich. Außerdem dient es als Schnittstelle für die Kommunikation mit den externen Modulen. Nach der Datenverarbeitung übernimmt das Backend die anschließende Weiterverarbeitung des Prozesses.
+Als Orchestrators tritt das lokale Spring-Boot-Backend auf. Es ist primär für den sichern Umgang mit den vertraulichen Daten verantwortlich. Außerdem dient es als Schnittstelle für die Kommunikation mit den externen Modulen. Nach der Datenverarbeitung übernimmt das Backend die anschließende Weiterverarbeitung des Prozesses.
 \section{SecHub Services}
 \subsection{Gateway}
-Vor unsern Services haben wir ein Spring Cloud Gateway gebaut. Über dieses Gateway, das als Reverse Proxy konzipiert ist, laufen alle Anfragen. Das Gateway hat beispielsweise die Aufgabe, zu prüfen, ob eine Berechtigung vorliegt für das Modul, welches angesprochen werden soll. Seine Hauptaufgabe liegt jedoch im sichern Weiterleiten der Anfragen an die entsprechenden Module.
-\subsection{Cloud Services}
-Das Gateway leitet die Anfragen an die modularen Services weiter. Dieses Konzept erlaubt uns, die Module zu jedem Zeitpunkt beliebig erweitern zu können ohne dabei die Lauffähigkeit der bestehenden Services zu gefährden.  Momentan stehen folgende Module zur Verfügung:
+Vor unsern Services haben wir ein Spring-Cloud-Gateway gebaut. Über dieses Gateway, das als Reverse Proxy konzipiert ist, laufen alle Anfragen. Das Gateway hat beispielsweise die Aufgabe, zu prüfen, ob eine Berechtigung für das Modul vorliegt, welches angesprochen werden soll. Seine Hauptaufgabe liegt jedoch im sichern Weiterleiten der Anfragen an die entsprechenden Module.
+\subsection{Cloud-Services}
+Das Gateway leitet die Anfragen an die modularen Services weiter. Dieses Konzept erlaubt es uns, die Module zu jedem Zeitpunkt beliebig erweitern zu können, ohne dabei die Lauffähigkeit der bestehenden Services zu gefährden.  Momentan stehen folgende Module zur Verfügung:
   \begin{itemize}
-  \item \textbf{Erstellung von Phishing Mail Generator}
-   \item \textbf{Cve Parser Service}
+  \item \textbf{Phishing-Mail-Generator}
+   \item \textbf{Cve-Parser-Service}
 \end{itemize}
 \section{Sicherhetiskonzept}
-Alle Verbindungen sind TLS verschlüsselt unsere Endpunkte sind mit OAuth2.0 abgesichert. Unsere Cloud-Services sind zustandslos und minimieren daher ihre Angriffsfläche. Wir nutzen ein Gateway als Security  Layer und alle vertraunswürdigen Daten werden vom Kunden selbst verwaltet und gehalten. 
+Alle Verbindungen sind TLS-verschlüsselt und unsere Endpunkte mit OAuth2.0 abgesichert. Unsere Cloud-Services sind zustandslos und minimieren daher ihre Angriffsfläche. Wir nutzen ein Gateway als Security-Layer und alle vertrauenswürdigen Daten werden vom Kunden selbst verwaltet und gehalten. 
